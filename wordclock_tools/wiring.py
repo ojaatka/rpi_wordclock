@@ -33,6 +33,8 @@ class wiring:
             self.wcl = christians_wiring(self.WCA_WIDTH, self.WCA_HEIGHT)
         elif wiring_layout == 'timos_wiring':
             self.wcl = timos_wiring(self.WCA_WIDTH, self.WCA_HEIGHT)
+        elif wiring_layout == 'oliviers_wiring':
+            self.wcl = oliviers_wiring(self.WCA_WIDTH, self.WCA_HEIGHT)
         else:
             print('Warning: No valid wiring layout found. Falling back to default!')
             self.wcl = bernds_wiring(self.WCA_WIDTH, self.WCA_HEIGHT)
@@ -196,6 +198,52 @@ class timos_wiring:
             return 112
         elif min == 4:
             return 0
+        else:
+            print('WARNING: Out of range, when mapping minutes...')
+            print(min)
+            return 0
+
+class oliviers_wiring:
+    '''
+    A class, holding all information of the wordclock's layout to map given
+    timestamps, 2d-coordinates to the corresponding LEDs (corresponding to
+    the individual wiring/layout of any wordclock).
+    If a different wordclock wiring/layout is chosen, this class needs to be
+    adopted.
+    '''
+
+    def __init__(self, WCA_WIDTH, WCA_HEIGHT):
+        self.WCA_WIDTH   = WCA_WIDTH
+        self.WCA_HEIGHT  = WCA_HEIGHT
+
+    def getStripIndexFrom2D(self, x, y):
+        '''
+        Mapping coordinates to the wordclocks display
+        Needs hardware/wiring dependent implementation
+        Final range:
+             (0,0): top-left
+             (self.WCA_WIDTH-1, self.WCA_HEIGHT-1): bottom-right
+        '''
+        if x%2 == 0:
+            pos = (self.WCA_WIDTH-x-1)*self.WCA_HEIGHT+y+2
+        else:
+            pos = (self.WCA_WIDTH*self.WCA_HEIGHT)-(self.WCA_HEIGHT*x)-y+1
+        return pos
+
+    def mapMinutes(self, min):
+        '''
+        Access minutes (1,2,3,4)
+        Needs hardware/wiring dependent implementation
+        This implementation assumes the minutes to be wired as first and last two leds of the led-strip
+        '''
+        if min == 1:
+            return 0
+        elif min == 2:
+            return 1
+        elif min == 3:
+            return 2
+        elif min == 4:
+            return 3
         else:
             print('WARNING: Out of range, when mapping minutes...')
             print(min)
