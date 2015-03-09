@@ -225,9 +225,9 @@ class oliviers_wiring:
              (self.WCA_WIDTH-1, self.WCA_HEIGHT-1): bottom-right
         '''
         if x%2 == 0:
-            pos = (self.WCA_WIDTH-x-1)*self.WCA_HEIGHT+y+2
+            pos = (self.WCA_WIDTH-x)*self.WCA_HEIGHT+y+4
         else:
-            pos = (self.WCA_WIDTH*self.WCA_HEIGHT)-(self.WCA_HEIGHT*x)-y+1
+            pos = (self.WCA_WIDTH*self.WCA_HEIGHT)-(self.WCA_HEIGHT*x)
         return pos
 
     def mapMinutes(self, min):
